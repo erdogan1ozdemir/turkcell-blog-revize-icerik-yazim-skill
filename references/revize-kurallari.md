@@ -13,6 +13,38 @@
 - Yazarın ses tonu, örnekleri ve benzetmeleri. Revizyon metni yeniden yazmak değildir
 - Kaynak satırları ve `Not:` blokları
 
+## Görsel eklenmez
+
+Yazıya görsel önerilmez ve eklenmez; görsel kurgusu içerik ekibinin kararıdır. Kaynak dosyada
+gömülü görsel bulunuyorsa teslim dosyasından çıkarılır. İki adım gerekir:
+
+1. Gövdeden kaldırma: `w:drawing` ve `w:pict` taşıyan run'lar silinir, boşalan paragraf da kaldırılır
+2. Paketten kaldırma: `word/media/` altındaki dosyalar ve `document.xml.rels` içindeki
+   `Target="media/..."` ilişkileri temizlenir. Yalnız birinci adım yapılırsa görseller belgede
+   görünmez ama dosyanın içinde kalır; bir teslimde dosya 594 KB'de kalmıştı, temizlik sonrası 23 KB. Görselle ilgili tek istisna alt metin denetimidir:
+yayında görsel varsa alt metninin hedef kelimeyi taşıyıp taşımadığı ölçümde belirtilir.
+
+## Biçim korunur
+
+Bir paragraf yeniden kurulduğunda **kaynak dosyadaki biçim aynen geri verilir**. Metni düz run
+olarak yeniden yazmak, gözle fark edilmeyen ama teslimde görünen bir kayıp yaratıyor.
+
+Yeniden kurmadan önce paragrafın run yapısı okunur ve şunlar not edilir:
+
+- "Etiket: açıklama" kalıbında **etiket kalındır**; link eklerken bu kalınlık kaybolmamalı
+- `Not:` blokları genelde tamamı italik, etiketi kalın+italiktir
+- Giriş paragrafı bazı yazılarda tamamen kalın yazılır
+- Bağlantı run'ının kendisi de kuşatan biçimi alır: italik bir blok içindeki link italik kalır
+
+```python
+# yeniden kurmadan önce
+[(r.bold, r.italic, r.text[:30]) for r in p.runs]
+```
+
+Teslimden önce orijinal ile revize dosya paragraf paragraf karşılaştırılır; ortak paragrafların
+bold ve italik deseni birebir aynı olmalıdır. Bir turda "İnternet ihtiyacı:", "Yayıncı tarafı
+(Yükleme):" ve "Rekabetçi oyun:" etiketlerinin kalınlığı bu yüzden kaybolmuştu.
+
 ## Öneri vermeden önce bölüm envanteri
 
 Hiçbir ekleme önerisi, o bölümde zaten ne olduğu ölçülmeden verilmez. Ölçüm **bölüm bazındadır**;

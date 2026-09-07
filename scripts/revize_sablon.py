@@ -49,11 +49,12 @@ i=bul(r'^Aynı film dosyası')
 if i is not None:
     p=P[i]
     for r in list(p.runs): r._r.getparent().remove(r._r)
-    p.add_run("Bitrate, bir ses ya da görüntü içeriğinin saniyede taşıdığı veri miktarını ifade ediyor; "
+    _g=p.add_run("Bitrate, bir ses ya da görüntü içeriğinin saniyede taşıdığı veri miktarını ifade ediyor; "
               "Türkçede bit hızı, İngilizce kaynaklarda ise bit rate olarak geçiyor. Saniyede taşınan bit "
               "sayısı arttıkça görüntüdeki ayrıntı ve sesteki netlik yükseliyor, dosya da büyüyor. Aynı film "
               "bir ekranda kristal netliğinde açılırken diğerinde donuk görünüyorsa, aradaki fark çoğu zaman "
               "çözünürlük değil bitrate.")
+    _g.bold=True   # kaynak paragraf kalın yazılmıştı, biçim korunuyor
     yorum(p, "Giriş paragrafı yeniden yazıldı. Önceki halinde tanım üçüncü cümlede başlıyordu; "
              "arama sonuçlarının üstündeki AI Overview ve öne çıkan snippet, başlığın hemen altındaki "
              "bağlamdan bağımsız okunabilen ilk cümleyi alıntılıyor. Tanım ilk cümleye alındı, benzetme "
@@ -231,17 +232,26 @@ def link_yap(p, anchor, url):
 
 # ------------------------------------------------------------------ 10 · iç linkler ve anchor metni
 def paragraf_kur(p, parcalar):
-    """Paragrafı sıfırdan kurar. parcalar: (metin, url|None) çiftleri."""
+    """Paragrafı sıfırdan kurar. parcalar: (metin, url|None) ya da (metin, url|None, bicim).
+    bicim: {"bold":True,"italic":True}. Kaynak paragraftaki kalın etiket ve italik blok korunur."""
     for h in p._p.findall(f'.//{{{p._p.nsmap["w"]}}}hyperlink'): p._p.remove(h)
     for r in list(p.runs): r._r.getparent().remove(r._r)
-    for metin,url in parcalar:
-        if not url: p.add_run(metin); continue
+    for parca in parcalar:
+        metin,url = parca[0],parca[1]
+        bicim = parca[2] if len(parca)>2 else {}
+        if not url:
+            r=p.add_run(metin)
+            if bicim.get("bold"): r.bold=True
+            if bicim.get("italic"): r.italic=True
+            continue
         rid=p.part.relate_to(url, RT.HYPERLINK, is_external=True)
         h=OxmlElement('w:hyperlink'); h.set(qn('r:id'), rid)
         r=OxmlElement('w:r'); rPr=OxmlElement('w:rPr')
         st=OxmlElement('w:rStyle'); st.set(qn('w:val'),'Hyperlink'); rPr.append(st)
         c=OxmlElement('w:color'); c.set(qn('w:val'),'1D5AFF'); rPr.append(c)
         u=OxmlElement('w:u'); u.set(qn('w:val'),'single'); rPr.append(u)
+        if bicim.get("bold"): rPr.append(OxmlElement('w:b'))
+        if bicim.get("italic"): rPr.append(OxmlElement('w:i'))
         r.append(rPr)
         t=OxmlElement('w:t'); t.text=metin; t.set(qn('xml:space'),'preserve'); r.append(t)
         h.append(r); p._p.append(h)
@@ -252,20 +262,23 @@ PING='https://www.turkcell.com.tr/blog/5g-ve-ping-5g-ile-oyunlarda-ping-dusurme-
 FPS='https://www.turkcell.com.tr/blog/fps-nedir'
 ANCHOR=[
  (r'^İnternet ihtiyacı: İçeriğin bitrate',
-  [("İnternet ihtiyacı: İçeriğin bitrate'i, onu kesintisiz izlemek için gereken minimum bağlantı hızını "
-    "doğrudan belirliyor; bu hız ",None),("Mbps",MBPS),(" cinsinden ölçülüyor.",None)],
+  [("İnternet ihtiyacı:",None,{"bold":True}),
+   (" İçeriğin bitrate'i, onu kesintisiz izlemek için gereken minimum bağlantı hızını doğrudan "
+    "belirliyor; bu hız ",None),("Mbps",MBPS),(" cinsinden ölçülüyor.",None)],
   "İç link eklendi (mevcutta yok): Mbps yazısına bağlantı verildi. Anchor metni hedef sayfanın "
   "kelimesini taşıyor; terim bu yazıda zaten 22 kez geçiyor, cümlenin sonuna onu doğal biçimde "
   "taşıyan bir bölüm eklendi. Bitrate ile bağlantı hızı ilişkisi okuyucunun ilk takıldığı yer oluyor "
   "ve blogun bu konudaki sayfası aramada 2.5 ortalama sırada."),
  (r'^Yayıncı tarafı \(Yükleme\)',
-  [("Yayıncı tarafı (Yükleme): Canlı yayında belirleyici olan ",None),("upload hızı",UPLOAD),
+  [("Yayıncı tarafı (Yükleme):",None,{"bold":True}),(" Canlı yayında belirleyici olan ",None),
+   ("upload hızı",UPLOAD),
    (" oluyor ve çoğu ev bağlantısında bu değer indirmenin belirgin altında kalıyor.",None)],
   "İç link eklendi (mevcutta yok): upload yazısına bağlantı verildi. Anchor 'yükleme hızı' yerine "
   "'upload hızı' yapıldı; hedef sayfanın kelimesi 'upload' ve terim bu yazıda hiç geçmiyordu, "
   "yalnız Türkçe karşılığı kullanılıyordu."),
  (r'^Rekabetçi oyun',
-  [("Rekabetçi oyun: Oyun trafiği saniyede birkaç yüz kbps ile çalışıyor. Belirleyici olan bitrate değil, ",None),
+  [("Rekabetçi oyun:",None,{"bold":True}),
+   (" Oyun trafiği saniyede birkaç yüz kbps ile çalışıyor. Belirleyici olan bitrate değil, ",None),
    ("ping",PING),(" olarak ölçülen düşük gecikme ve düzenli veri akışı oluyor.",None)],
   "İç link eklendi (mevcutta yok): ping yazısına bağlantı verildi. Anchor 'düşük gecikme' yerine "
   "'ping' yapıldı ve terim cümleye eklendi; hedef sayfanın kelimesi 'ping' ve terim bu yazıda hiç "
@@ -293,9 +306,10 @@ DIS=[(r'^Aşağıdaki tablo, YouTube',
   "Dış kaynak bağlantısının anchor metni 'özetliyor' idi; kaynağı adlandıran bir ifadeye çevrildi. "
   "Anlam taşımayan anchor, bağlantının neye gittiğini okuyucuya da arama motoruna da anlatmıyor."),
  (r"^Not: Twitch'in resmi yayın kılavuzuna",
-  [("Not: ",None),("Twitch'in resmi yayın kılavuzuna","https://help.twitch.tv/s/article/broadcasting-guidelines"),
+  [("Not:",None,{"bold":True,"italic":True}),(" ",None,{"italic":True}),
+   ("Twitch'in resmi yayın kılavuzuna","https://help.twitch.tv/s/article/broadcasting-guidelines",{"italic":True}),
    (" göre, transkodlama garantisi olmayan yayıncılar için 720p60 çözünürlükte 4.500 kbps, izleyici "
-    "erişilebilirliği açısından daha güvenli bir tercih oluyor.",None)],
+    "erişilebilirliği açısından daha güvenli bir tercih oluyor.",None,{"italic":True})],
   "Dış kaynak bağlantısının anchor metni 'oluyor' idi; kaynağı adlandıran ifadeye çevrildi.")]
 for desen,parca,not_ in DIS:
     i=bul(desen)
@@ -304,7 +318,20 @@ for desen,parca,not_ in DIS:
 LOG.append("Dış kaynak anchor metinleri kaynağı adlandıracak biçimde düzeltildi")
 d.save(HEDEF); print(f"anchor düzeltildi: {n}")
 
-# ------------------------------------------------------------------ 11 · tablo arka planı
+# ------------------------------------------------------------------ 11 · görsellerin kaldırılması
+# Yazıya görsel eklenmiyor; kaynak dosyadaki gömülü görseller de teslimden çıkarılıyor.
+W='{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
+gorsel=0
+for par in list(d.paragraphs):
+    ciz=par._p.findall(f'.//{W}drawing')+par._p.findall(f'.//{W}pict')
+    if not ciz: continue
+    for r in list(par.runs):
+        if r._r.findall(f'.//{W}drawing') or r._r.findall(f'.//{W}pict'):
+            r._r.getparent().remove(r._r); gorsel+=1
+    if not par.text.strip(): par._p.getparent().remove(par._p)
+LOG.append(f"Gövdeden kaldırılan görsel: {gorsel}")
+
+# ------------------------------------------------------------------ 12 · tablo arka planı
 # Hücrelerdeki mavi dolgu (3c78d8) kaldırılıyor; tablolar şeffaf zeminle veriliyor.
 from docx.oxml.ns import qn as _qn
 sil=0
@@ -323,3 +350,26 @@ for t in d.tables:
                         run.font.color.rgb=None
 LOG.append(f"Tablo hücrelerindeki dolgu kaldırıldı: {sil} hücre")
 d.save(HEDEF); print(f"tablo dolgusu kaldırıldı: {sil} hücre")
+
+# ------------------------------------------------------------------ 13 · kullanılmayan görsel dosyaları
+# Gövdeden çıkarılan görseller pakette kalıyor; dosya ve ilişki kayıtları temizlenir.
+import zipfile, shutil, os, re as _re
+def medya_temizle(yol):
+    gecici=yol+".tmp"
+    with zipfile.ZipFile(yol) as z:
+        adlar=z.namelist()
+        kalan=[n for n in adlar if not n.startswith("word/media/")]
+        with zipfile.ZipFile(gecici,"w",zipfile.ZIP_DEFLATED) as y:
+            for n in kalan:
+                veri=z.read(n)
+                if n.endswith("document.xml.rels"):
+                    metin=veri.decode("utf-8")
+                    metin=_re.sub(r'<Relationship[^>]*Target="media/[^"]*"[^>]*/>','',metin)
+                    veri=metin.encode("utf-8")
+                y.writestr(n, veri)
+    os.replace(gecici, yol)
+    return len(adlar)-len(kalan)
+d.save(HEDEF)
+atilan=medya_temizle(HEDEF)
+LOG.append(f"Pakette kalan görsel dosyası temizlendi: {atilan}")
+print(f"görsel dosyası atıldı: {atilan}")
