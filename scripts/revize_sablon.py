@@ -120,29 +120,6 @@ LOG.append("Sık sorulan sorular bölümü eklendi (4 soru)")
 d.save(HEDEF)
 print("SSS eklendi")
 
-# ------------------------------------------------------------------ 5 · iç link yerleşimleri
-P=d.paragraphs
-LINK=[
- (r'İnternet ihtiyacı: İçeriğin bitrate',
-  "İç link (mevcutta yok): 'gereken minimum bağlantı hızı' ifadesi mbps nedir yazısına bağlanabilir · "
-  "https://www.turkcell.com.tr/blog/mbps-nedir · Anchor: Mbps nedir. Gövde içinden verilen bağlantı, "
-  "ilgili yazılar bloğundaki bağlantının yerini tutmuyor; yazının şu an gövdesinde tek bir iç link bile bulunmuyor."),
- (r'^Yayıncı tarafı \(Yükleme\)',
-  "İç link (mevcutta yok): 'yükleme hızı' ifadesi upload yazısına bağlanabilir · "
-  "https://www.turkcell.com.tr/blog/upload-nedir-downloaddan-farki-ve-ideal-hiz-degerleri · Anchor: upload hızı."),
- (r'^Rekabetçi oyun',
-  "İç link (mevcutta yok): 'düşük gecikme' ifadesi ping yazısına bağlanabilir · "
-  "https://www.turkcell.com.tr/blog/5g-ve-ping-5g-ile-oyunlarda-ping-dusurme-yollari-ve-cozumler · Anchor: ping."),
- (r'Önerilen bitrate çözünürlük ve kare hızıyla',
-  "İç link (mevcutta yok): 'kare hızı' ifadesi FPS yazısına bağlanabilir · "
-  "https://www.turkcell.com.tr/blog/fps-nedir · Anchor: FPS nedir."),
-]
-n=0
-for desen,not_ in LINK:
-    i=bul(desen)
-    if i is not None: yorum(P[i],not_); n+=1
-LOG.append(f"İç link önerisi: {n} nokta")
-
 # ------------------------------------------------------------------ 6 · bölüm envanteri ve görsel yerleşimi
 # Öneri vermeden önce her bölümün ne taşıdığı ölçülür: tablosu olan bölüme "tablo hâline getirilsin"
 # ya da "tek bakışta anlaşılır olsun" gerekçeli görsel önerilmez.
@@ -161,28 +138,8 @@ def bolum_envanteri():
 ENV=bolum_envanteri()
 print("bölüm envanteri · tablosu olanlar:",[k[:40] for k,v in ENV.items() if v["tablo"]])
 
-GORSEL=[
- (r'^Bitrate, dosyanın bit cinsinden boyutunun',
-  "Görsel (mevcutta yok): hesaplama adımlarını gösteren bir şema eklenebilir; boyut, süre ve sonuç "
-  "üç kutuda verilebilir. Bu bölümde tablo bulunmuyor, anlatım tamamen metin üzerinden ilerliyor. "
-  "Yazının gövdesinde kapak dışında hiç görsel yok; arama sonucunda ilk sıradaki üç sayfanın satırında "
-  "görsel küçük resmi görünüyor. Dosya adı bitrate-nasil-hesaplanir.jpg, alt metni 'bitrate nasıl "
-  "hesaplanır formülü' olabilir."),
- (r'^Bitrate içeriğin saniyede ürettiği veri miktarını, bant genişliği',
-  "Görsel (mevcutta yok): bitrate, bant genişliği ve buffering ilişkisini gösteren basit bir akış "
-  "şeması bu bölümü destekler. Bölümde tablo bulunmuyor, üç kavram yalnız madde listesiyle ayrılıyor. "
-  "Alt metin: 'bitrate ve bant genişliği farkı'."),
- (r'^Sabit bitrate \(CBR\), bir dosyayı baştan sona',
-  "Görsel (mevcutta yok): bölümde CBR ve VBR'yi özellik bazında karşılaştıran bir tablo zaten bulunuyor; "
-  "önerilen görsel onun yerine geçmiyor, veri hızının zaman içindeki dağılımını gösteren iki çizgili bir "
-  "grafik olarak düşünülüyor. Tablo değerleri, grafik davranışı anlatıyor. Alt metin: 'CBR ve VBR veri "
-  "hızı dağılımı'."),
-]
-m=0
-for desen,not_ in GORSEL:
-    i=bul(desen)
-    if i is not None: yorum(P[i],not_); m+=1
-LOG.append(f"Görsel önerisi: {m} nokta (tablosu bulunan bölümler dışarıda bırakıldı)")
+# Görsel önerisi verilmiyor: yazının görsel kurgusu içerik ekibinin kararına bırakıldı.
+
 # ------------------------------------------------------------------ 7 · başlık altı özet ve kelime karşılığı
 P=d.paragraphs
 i=bul(r'^Bitrate Görüntü ve Ses Kalitesini')
@@ -272,35 +229,7 @@ def link_yap(p, anchor, url):
     if sonra: p.add_run(sonra)
     return True
 
-LINKLER=[
- (r'İnternet ihtiyacı: İçeriğin bitrate','minimum bağlantı hızını',
-  'https://www.turkcell.com.tr/blog/mbps-nedir',
-  "İç link eklendi: 'minimum bağlantı hızını' ifadesi Mbps yazısına bağlandı. Bitrate ile bağlantı hızı "
-  "arasındaki ilişki okuyucunun ilk takıldığı yer oluyor ve blogun bu konudaki sayfası aramada 2.5 "
-  "ortalama sırada. Bağlantı gövde içinden veriliyor; ilgili yazılar bloğu bu yerleşimin yerini tutmuyor."),
- (r'^Yayıncı tarafı \(Yükleme\)','yükleme hızı',
-  'https://www.turkcell.com.tr/blog/upload-nedir-downloaddan-farki-ve-ideal-hiz-degerleri',
-  "İç link eklendi: 'yükleme hızı' ifadesi upload yazısına bağlandı. Canlı yayın bölümünde yükleme hızı "
-  "belirleyici kavram ve blogda bu konuyu karşılayan ayrı bir yazı bulunuyor."),
- (r'^Rekabetçi oyun','düşük gecikme',
-  'https://www.turkcell.com.tr/blog/5g-ve-ping-5g-ile-oyunlarda-ping-dusurme-yollari-ve-cozumler',
-  "İç link eklendi: 'düşük gecikme' ifadesi ping yazısına bağlandı. Oyun bölümünde belirleyici olanın "
-  "bitrate değil gecikme olduğu anlatılıyor; okuyucunun bir sonraki sorusu doğrudan bu yazıya gidiyor."),
- (r'^Önerilen bitrate çözünürlük ve kare hızıyla','kare hızıyla',
-  'https://www.turkcell.com.tr/blog/fps-nedir',
-  "İç link eklendi: 'kare hızıyla' ifadesi FPS yazısına bağlandı. Tablodaki 24-30 FPS ve 48-60 FPS "
-  "sütunları bu kavramı gerektiriyor."),
-]
-P=d.paragraphs; ek=0
-for desen,anchor,url,not_ in LINKLER:
-    i=bul(desen)
-    if i is None: continue
-    if link_yap(P[i],anchor,url):
-        yorum(P[i],not_); ek+=1
-LOG.append(f"Gövde içi iç link: {ek} bağlantı eklendi")
-d.save(HEDEF); print(f"iç link eklendi: {ek}")
-
-# ------------------------------------------------------------------ 11 · anchor metni hedefin kelimesi olur
+# ------------------------------------------------------------------ 10 · iç linkler ve anchor metni
 def paragraf_kur(p, parcalar):
     """Paragrafı sıfırdan kurar. parcalar: (metin, url|None) çiftleri."""
     for h in p._p.findall(f'.//{{{p._p.nsmap["w"]}}}hyperlink'): p._p.remove(h)
@@ -325,25 +254,29 @@ ANCHOR=[
  (r'^İnternet ihtiyacı: İçeriğin bitrate',
   [("İnternet ihtiyacı: İçeriğin bitrate'i, onu kesintisiz izlemek için gereken minimum bağlantı hızını "
     "doğrudan belirliyor; bu hız ",None),("Mbps",MBPS),(" cinsinden ölçülüyor.",None)],
-  "Anchor metni hedef sayfanın kelimesine çevrildi: 'minimum bağlantı hızını' yerine 'Mbps'. "
-  "Bağlantı verilen yazının hedef kelimesi 'mbps nedir' ve terim bu yazıda zaten 22 kez geçiyor; "
-  "cümlenin sonuna terimi doğal biçimde taşıyan bir bölüm eklendi."),
+  "İç link eklendi (mevcutta yok): Mbps yazısına bağlantı verildi. Anchor metni hedef sayfanın "
+  "kelimesini taşıyor; terim bu yazıda zaten 22 kez geçiyor, cümlenin sonuna onu doğal biçimde "
+  "taşıyan bir bölüm eklendi. Bitrate ile bağlantı hızı ilişkisi okuyucunun ilk takıldığı yer oluyor "
+  "ve blogun bu konudaki sayfası aramada 2.5 ortalama sırada."),
  (r'^Yayıncı tarafı \(Yükleme\)',
   [("Yayıncı tarafı (Yükleme): Canlı yayında belirleyici olan ",None),("upload hızı",UPLOAD),
    (" oluyor ve çoğu ev bağlantısında bu değer indirmenin belirgin altında kalıyor.",None)],
-  "Anchor 'yükleme hızı' yerine 'upload hızı' yapıldı ve terim yazıya eklendi. Bağlantı verilen yazının "
-  "hedef kelimesi 'upload'; terim bu yazıda hiç geçmiyordu, yalnız Türkçe karşılığı kullanılıyordu."),
+  "İç link eklendi (mevcutta yok): upload yazısına bağlantı verildi. Anchor 'yükleme hızı' yerine "
+  "'upload hızı' yapıldı; hedef sayfanın kelimesi 'upload' ve terim bu yazıda hiç geçmiyordu, "
+  "yalnız Türkçe karşılığı kullanılıyordu."),
  (r'^Rekabetçi oyun',
   [("Rekabetçi oyun: Oyun trafiği saniyede birkaç yüz kbps ile çalışıyor. Belirleyici olan bitrate değil, ",None),
    ("ping",PING),(" olarak ölçülen düşük gecikme ve düzenli veri akışı oluyor.",None)],
-  "Anchor 'düşük gecikme' yerine 'ping' yapıldı ve terim yazıya eklendi. Bağlantı verilen yazının hedef "
-  "kelimesi 'ping'; terim bu yazıda hiç geçmiyordu."),
+  "İç link eklendi (mevcutta yok): ping yazısına bağlantı verildi. Anchor 'düşük gecikme' yerine "
+  "'ping' yapıldı ve terim cümleye eklendi; hedef sayfanın kelimesi 'ping' ve terim bu yazıda hiç "
+  "geçmiyordu. Oyun bölümünde belirleyici olanın bitrate değil gecikme olduğu anlatılıyor."),
  (r'^Önerilen bitrate çözünürlük ve kare hızıyla',
   [("Önerilen bitrate çözünürlük ve kare hızıyla, yani ",None),("FPS",FPS),
    (" değeriyle birlikte artıyor. 720p için 5 Mbps civarı yeterliyken 1080p 8 Mbps, 4K ise 35-45 Mbps "
     "bandına çıkıyor.",None)],
-  "Anchor 'kare hızıyla' yerine 'FPS' yapıldı. Bağlantı verilen yazının hedef kelimesi 'fps' ve terim "
-  "tablo başlıklarında zaten kullanılıyor; gövdede de karşılığı verildi."),
+  "İç link eklendi (mevcutta yok): FPS yazısına bağlantı verildi. Anchor 'kare hızıyla' yerine 'FPS' "
+  "yapıldı; hedef sayfanın kelimesi 'fps' ve terim tablo başlıklarında zaten kullanılıyordu, gövdede "
+  "de karşılığı verildi."),
 ]
 P=d.paragraphs; n=0
 for desen,parca,not_ in ANCHOR:

@@ -144,7 +144,12 @@ Her değişiklik dosya içinde yorumlanır. Yorum üç parçadan oluşur:
    okunabilen ilk cümleyi alıntılıyor."
 3. **Veri** · "'bit rate' aylık 480 arama alıyor ve gövdede hiç geçmiyordu."
 
-Eklenen ama belgede karşılığı olmayan öneriler `(mevcutta yok)` ibaresiyle işaretlenir. İç link ve
+Eklenen ama belgede karşılığı olmayan öneriler `(mevcutta yok)` ibaresiyle işaretlenir.
+
+**Bir değişiklik bir yorum alır.** Aynı paragraf birden çok turda düzenlendiyse yorumlar üst üste
+binmemeli: önceki turun önerisi uygulandıysa o yorum kaldırılır, yerini sonucu anlatan tek bir yorum
+alır. Bir yazıda "şu bağlantı verilebilir", "bağlantı eklendi" ve "anchor değiştirildi" biçiminde üç
+ayrı yorum aynı cümlede birikmişti; okuyan kişi hangisinin geçerli olduğunu ayırt edemiyor. İç link ve
 görsel önerileri metne yazılmaz, ilgili paragrafa yorum olarak bırakılır: anchor metni, hedef adres
 ve gerekçe birlikte verilir.
 
