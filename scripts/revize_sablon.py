@@ -54,7 +54,7 @@ if i is not None:
               "sayısı arttıkça görüntüdeki ayrıntı ve sesteki netlik yükseliyor, dosya da büyüyor. Aynı film "
               "bir ekranda kristal netliğinde açılırken diğerinde donuk görünüyorsa, aradaki fark çoğu zaman "
               "çözünürlük değil bitrate.")
-    yorum(p, "Giriş paragrafı yeniden yazıldı. Önceki hâlinde tanım üçüncü cümlede başlıyordu; "
+    yorum(p, "Giriş paragrafı yeniden yazıldı. Önceki halinde tanım üçüncü cümlede başlıyordu; "
              "arama sonuçlarının üstündeki AI Overview ve öne çıkan snippet, başlığın hemen altındaki "
              "bağlamdan bağımsız okunabilen ilk cümleyi alıntılıyor. Tanım ilk cümleye alındı, benzetme "
              "arkasına bırakıldı. Aynı cümlede 'bit hızı' (aylık 210 arama) ve 'bit rate' (aylık 480 arama) "
@@ -68,7 +68,7 @@ if i is not None:
     h=ekle_sonra(P[i-1], "Bit Rate ile Bit Hızı Aynı Şey mi?", stil=P[i].style)
     g1=ekle_sonra(h,
         "Bit rate, bitrate ve bit hızı aynı kavramı anlatıyor. İngilizce kaynaklarda terim iki kelime "
-        "hâlinde 'bit rate' biçiminde yazılırken Türkçede bitişik kullanımı yaygınlaşmış durumda; "
+        "halinde 'bit rate' biçiminde yazılırken Türkçede bitişik kullanımı yaygınlaşmış durumda; "
         "Türkçe karşılığı ise bit hızı.", stil=govde_stil)
     g2=ekle_sonra(g1,
         "Üçü de saniyede aktarılan bit sayısını ifade ediyor ve aralarında teknik bir fark bulunmuyor. "
@@ -121,7 +121,7 @@ d.save(HEDEF)
 print("SSS eklendi")
 
 # ------------------------------------------------------------------ 6 · bölüm envanteri ve görsel yerleşimi
-# Öneri vermeden önce her bölümün ne taşıdığı ölçülür: tablosu olan bölüme "tablo hâline getirilsin"
+# Öneri vermeden önce her bölümün ne taşıdığı ölçülür: tablosu olan bölüme "tablo haline getirilsin"
 # ya da "tek bakışta anlaşılır olsun" gerekçeli görsel önerilmez.
 from docx.table import Table
 from docx.text.paragraph import Paragraph
@@ -181,7 +181,7 @@ if i is not None:
               "deneyimin her aşamasında karşımıza çıkıyor. Büyük platformlar da bitrate'i tesadüfe "
               "bırakmıyor: YouTube çözünürlüğe göre önerilen bantları yayımlıyor, Twitch yayıncılar için "
               "üst sınır koyuyor, müzik servisleri ise akış kalitesini bu değere göre kademelendiriyor.")
-    yorum(p,"İkinci paragraf yeniden yazıldı. Önceki hâlinde bitrate tanımı ilk paragraftaki tanımı "
+    yorum(p,"İkinci paragraf yeniden yazıldı. Önceki halinde bitrate tanımı ilk paragraftaki tanımı "
             "neredeyse birebir tekrarlıyordu ('saniyede taşıdığı veri miktarını ifade ediyor' / 'birim "
             "zamanda taşıdığı veri miktarını ifade eden temel bir teknik ölçüttür'). Tanım ilk paragrafta "
             "kaldı, bu paragraf konunun nerede karşımıza çıktığıyla devam ediyor. Ayrıca 'Günümüzde' "
@@ -197,7 +197,7 @@ if i is not None:
               "yüksek kaliteli müzik için 320 kbps çoğu durumda dengeli bir değer oluyor. Bit rate "
               "içeriğin türüne ve izleneceği ortama göre değiştiği için tek bir doğru sayı bulunmuyor; "
               "yukarıdaki değerler başlangıç noktası olarak alınabiliyor.")
-    yorum(p,"Yanıt sırası değiştirildi. Önceki hâlinde cevap 'içeriğin türüne göre değişiyor' cümlesiyle "
+    yorum(p,"Yanıt sırası değiştirildi. Önceki halinde cevap 'içeriğin türüne göre değişiyor' cümlesiyle "
             "erteleniyordu; sorunun karşılığı olan değerler ikinci cümlede kalıyordu. Sorunun yanıtı ilk "
             "cümleye alındı, koşul açıklaması arkasına bırakıldı. Diğer üç soru zaten doğrudan yanıtla "
             "başlıyor, onlara dokunulmadı.")

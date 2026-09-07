@@ -17,7 +17,7 @@ madde listesi. Metin `icerik-dili-rehberi` rejim [A] kurallarına tabidir.
 ## Beklenti hesabı
 
 - Kümenin tekilleştirilmiş toplam araması alınır
-- İlk 3 için Click bandı, hacmin yaklaşık %12-20'si olarak bant hâlinde verilir
+- İlk 3 için Click bandı, hacmin yaklaşık %12-20'si olarak bant halinde verilir
 - Sonuç sayfasında AI Overview varsa bandın alt ucuna yakın seyredebileceği not düşülür
 - Yeni yayınlanmış yazıda sıralama okuması için en az dört hafta beklenmesi yazılır
 

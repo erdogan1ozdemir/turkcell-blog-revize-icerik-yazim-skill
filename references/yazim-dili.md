@@ -40,11 +40,11 @@ Aynı bilgi iki kez verilmez. Yazı tamamlandığında şunlar karşılaştırı
 - Giriş paragrafı ile ikinci paragraf (tanım tekrarı)
 - Ara başlık altındaki ilk cümle ile bir önceki bölümün kapanışı
 - Sık sorulan sorular yanıtları ile gövdedeki karşılıkları: yanıt gövdedeki cümlenin kopyası değil,
-  aynı bilginin kısa ve tek başına okunabilir hâli olur
+  aynı bilginin kısa ve tek başına okunabilir hali olur
 
 ## Yazarken kaçınılacaklar
 
-- Yapay zekâ metni izlenimi veren kalıplar: "günümüzde", "teknolojinin gelişmesiyle birlikte",
+- Yapay zeka metni izlenimi veren kalıplar: "günümüzde", "teknolojinin gelişmesiyle birlikte",
   "bu makalede ele alacağız", "sonuç olarak" ile başlayan kapanış.
 - Aynı cümlede iki kez geçen hedef kelime; doğal olmayan tekrar.
 - Abartı sıfatları ("mükemmel", "devrim niteliğinde") ve satış dili.

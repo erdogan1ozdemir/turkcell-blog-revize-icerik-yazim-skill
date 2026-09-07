@@ -35,11 +35,11 @@ def bolum_envanteri(d):
 
 Envanterin çıktısına göre:
 
-- **Tablosu olan bölüme "tablo hâline getirilsin" önerilmez.** Bu hata bir kez yapıldı: canlı yayın
-  bölümü için "değerler tablo hâline getirilir: platform, çözünürlük, önerilen bitrate" önerildi;
+- **Tablosu olan bölüme "tablo haline getirilsin" önerilmez.** Bu hata bir kez yapıldı: canlı yayın
+  bölümü için "değerler tablo haline getirilir: platform, çözünürlük, önerilen bitrate" önerildi;
   bölümde zaten "Platform / 1080p60 için Tipik Bitrate / Ek Not" tablosu duruyordu ve önerilen
   sütunlar mevcut tablonun sütunlarıydı.
-- **Tablosu olan bölüme görsel önerilecekse gerekçe ayrışır.** "Tek bakışta anlaşılır hâle getirir"
+- **Tablosu olan bölüme görsel önerilecekse gerekçe ayrışır.** "Tek bakışta anlaşılır hale getirir"
   gerekçesi tabloyu yok sayar. Görsel ancak tablodan farklı bir işi yapıyorsa önerilir: tablo değer
   karşılaştırır, grafik davranışı ya da zaman içindeki dağılımı gösterir. Bu ayrım yorumda yazılır.
 - **Görsel önerileri önce tablosuz bölümlere verilir.** Anlatımı tamamen metne dayanan bölümler
@@ -97,7 +97,7 @@ hızını" karşılamaz.
 | fps nedir | fps | kare hızıyla | **FPS** |
 
 **Terim yazıda geçmiyorsa metin güncellenir.** Anchor uydurulmaz, cümle terimi doğal biçimde
-taşıyacak hâle getirilir:
+taşıyacak hale getirilir:
 
 - "Belirleyici olan bitrate değil, düşük gecikme ve düzenli veri akışı" →
   "Belirleyici olan bitrate değil, **ping** olarak ölçülen düşük gecikme ve düzenli veri akışı"
@@ -145,6 +145,9 @@ Her değişiklik dosya içinde yorumlanır. Yorum üç parçadan oluşur:
 3. **Veri** · "'bit rate' aylık 480 arama alıyor ve gövdede hiç geçmiyordu."
 
 Eklenen ama belgede karşılığı olmayan öneriler `(mevcutta yok)` ibaresiyle işaretlenir.
+
+Yorumlarda şapkalı a (â) kullanılmaz: "hâlinde" değil **halinde**, "hâle" değil **hale**. Aynı
+kural revize edilen metin için de geçerlidir.
 
 **Bir değişiklik bir yorum alır.** Aynı paragraf birden çok turda düzenlendiyse yorumlar üst üste
 binmemeli: önceki turun önerisi uygulandıysa o yorum kaldırılır, yerini sonucu anlatan tek bir yorum
