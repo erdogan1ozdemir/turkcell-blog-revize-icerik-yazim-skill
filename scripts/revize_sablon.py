@@ -303,3 +303,23 @@ for desen,parca,not_ in DIS:
     paragraf_kur(P[i],parca); yorum(P[i],not_); n+=1
 LOG.append("Dış kaynak anchor metinleri kaynağı adlandıracak biçimde düzeltildi")
 d.save(HEDEF); print(f"anchor düzeltildi: {n}")
+
+# ------------------------------------------------------------------ 11 · tablo arka planı
+# Hücrelerdeki mavi dolgu (3c78d8) kaldırılıyor; tablolar şeffaf zeminle veriliyor.
+from docx.oxml.ns import qn as _qn
+sil=0
+for t in d.tables:
+    for r in t.rows:
+        for c in r.cells:
+            tcPr=c._tc.find(_qn('w:tcPr'))
+            if tcPr is None: continue
+            for shd in tcPr.findall(_qn('w:shd')):
+                tcPr.remove(shd); sil+=1
+            # metin rengi dolguya göre beyaza çekilmişse otomatik renge döndürülür
+            for p in c.paragraphs:
+                for run in p.runs:
+                    col=run.font.color
+                    if col is not None and col.rgb is not None and str(col.rgb).upper() in ("FFFFFF","FEFEFE"):
+                        run.font.color.rgb=None
+LOG.append(f"Tablo hücrelerindeki dolgu kaldırıldı: {sil} hücre")
+d.save(HEDEF); print(f"tablo dolgusu kaldırıldı: {sil} hücre")
