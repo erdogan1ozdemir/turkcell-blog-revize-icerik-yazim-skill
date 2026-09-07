@@ -280,3 +280,74 @@ for desen,anchor,url,not_ in LINKLER:
         yorum(P[i],not_); ek+=1
 LOG.append(f"Gövde içi iç link: {ek} bağlantı eklendi")
 d.save(HEDEF); print(f"iç link eklendi: {ek}")
+
+# ------------------------------------------------------------------ 11 · anchor metni hedefin kelimesi olur
+def paragraf_kur(p, parcalar):
+    """Paragrafı sıfırdan kurar. parcalar: (metin, url|None) çiftleri."""
+    for h in p._p.findall(f'.//{{{p._p.nsmap["w"]}}}hyperlink'): p._p.remove(h)
+    for r in list(p.runs): r._r.getparent().remove(r._r)
+    for metin,url in parcalar:
+        if not url: p.add_run(metin); continue
+        rid=p.part.relate_to(url, RT.HYPERLINK, is_external=True)
+        h=OxmlElement('w:hyperlink'); h.set(qn('r:id'), rid)
+        r=OxmlElement('w:r'); rPr=OxmlElement('w:rPr')
+        st=OxmlElement('w:rStyle'); st.set(qn('w:val'),'Hyperlink'); rPr.append(st)
+        c=OxmlElement('w:color'); c.set(qn('w:val'),'1D5AFF'); rPr.append(c)
+        u=OxmlElement('w:u'); u.set(qn('w:val'),'single'); rPr.append(u)
+        r.append(rPr)
+        t=OxmlElement('w:t'); t.text=metin; t.set(qn('xml:space'),'preserve'); r.append(t)
+        h.append(r); p._p.append(h)
+
+MBPS='https://www.turkcell.com.tr/blog/mbps-nedir'
+UPLOAD='https://www.turkcell.com.tr/blog/upload-nedir-downloaddan-farki-ve-ideal-hiz-degerleri'
+PING='https://www.turkcell.com.tr/blog/5g-ve-ping-5g-ile-oyunlarda-ping-dusurme-yollari-ve-cozumler'
+FPS='https://www.turkcell.com.tr/blog/fps-nedir'
+ANCHOR=[
+ (r'^İnternet ihtiyacı: İçeriğin bitrate',
+  [("İnternet ihtiyacı: İçeriğin bitrate'i, onu kesintisiz izlemek için gereken minimum bağlantı hızını "
+    "doğrudan belirliyor; bu hız ",None),("Mbps",MBPS),(" cinsinden ölçülüyor.",None)],
+  "Anchor metni hedef sayfanın kelimesine çevrildi: 'minimum bağlantı hızını' yerine 'Mbps'. "
+  "Bağlantı verilen yazının hedef kelimesi 'mbps nedir' ve terim bu yazıda zaten 22 kez geçiyor; "
+  "cümlenin sonuna terimi doğal biçimde taşıyan bir bölüm eklendi."),
+ (r'^Yayıncı tarafı \(Yükleme\)',
+  [("Yayıncı tarafı (Yükleme): Canlı yayında belirleyici olan ",None),("upload hızı",UPLOAD),
+   (" oluyor ve çoğu ev bağlantısında bu değer indirmenin belirgin altında kalıyor.",None)],
+  "Anchor 'yükleme hızı' yerine 'upload hızı' yapıldı ve terim yazıya eklendi. Bağlantı verilen yazının "
+  "hedef kelimesi 'upload'; terim bu yazıda hiç geçmiyordu, yalnız Türkçe karşılığı kullanılıyordu."),
+ (r'^Rekabetçi oyun',
+  [("Rekabetçi oyun: Oyun trafiği saniyede birkaç yüz kbps ile çalışıyor. Belirleyici olan bitrate değil, ",None),
+   ("ping",PING),(" olarak ölçülen düşük gecikme ve düzenli veri akışı oluyor.",None)],
+  "Anchor 'düşük gecikme' yerine 'ping' yapıldı ve terim yazıya eklendi. Bağlantı verilen yazının hedef "
+  "kelimesi 'ping'; terim bu yazıda hiç geçmiyordu."),
+ (r'^Önerilen bitrate çözünürlük ve kare hızıyla',
+  [("Önerilen bitrate çözünürlük ve kare hızıyla, yani ",None),("FPS",FPS),
+   (" değeriyle birlikte artıyor. 720p için 5 Mbps civarı yeterliyken 1080p 8 Mbps, 4K ise 35-45 Mbps "
+    "bandına çıkıyor.",None)],
+  "Anchor 'kare hızıyla' yerine 'FPS' yapıldı. Bağlantı verilen yazının hedef kelimesi 'fps' ve terim "
+  "tablo başlıklarında zaten kullanılıyor; gövdede de karşılığı verildi."),
+]
+P=d.paragraphs; n=0
+for desen,parca,not_ in ANCHOR:
+    i=bul(desen)
+    if i is None: continue
+    paragraf_kur(P[i],parca); yorum(P[i],not_); n+=1
+LOG.append(f"Anchor metni hedef kelimeye çevrildi: {n} bağlantı")
+
+# dış kaynak bağlantılarının anchor'ı da kaynağı adlandırır
+DIS=[(r'^Aşağıdaki tablo, YouTube',
+  [("Aşağıdaki tablo, ",None),("YouTube'un resmi olarak önerdiği yükleme değerlerini",
+    "https://support.google.com/youtube/answer/1722171"),
+   (" standart dinamik aralık (SDR) içerik için Mart 2026 itibarıyla özetliyor:",None)],
+  "Dış kaynak bağlantısının anchor metni 'özetliyor' idi; kaynağı adlandıran bir ifadeye çevrildi. "
+  "Anlam taşımayan anchor, bağlantının neye gittiğini okuyucuya da arama motoruna da anlatmıyor."),
+ (r"^Not: Twitch'in resmi yayın kılavuzuna",
+  [("Not: ",None),("Twitch'in resmi yayın kılavuzuna","https://help.twitch.tv/s/article/broadcasting-guidelines"),
+   (" göre, transkodlama garantisi olmayan yayıncılar için 720p60 çözünürlükte 4.500 kbps, izleyici "
+    "erişilebilirliği açısından daha güvenli bir tercih oluyor.",None)],
+  "Dış kaynak bağlantısının anchor metni 'oluyor' idi; kaynağı adlandıran ifadeye çevrildi.")]
+for desen,parca,not_ in DIS:
+    i=bul(desen)
+    if i is None: continue
+    paragraf_kur(P[i],parca); yorum(P[i],not_); n+=1
+LOG.append("Dış kaynak anchor metinleri kaynağı adlandıracak biçimde düzeltildi")
+d.save(HEDEF); print(f"anchor düzeltildi: {n}")

@@ -49,7 +49,40 @@ Bağlantılar **gerçek hyperlink olarak metne yerleştirilir**, yorum olarak b�
 gerekçe kalır. Anchor, cümlenin doğal bir parçası olan ifadedir; "buraya tıklayın" ya da çıplak adres
 kullanılmaz.
 
-- Anchor, hedef yazının konusunu adlandıran ifadedir: "minimum bağlantı hızını", "yükleme hızı"
+### Anchor metni hedefin kelimesini taşır
+
+Anchor, bağlantı verilen yazının **hedef kelimesini içerir**. Birebir aynı olması gerekmez, kelime
+anchor içinde geçerse yeter: "upload hızı" anchor'ı `upload` hedefini karşılar, "minimum bağlantı
+hızını" karşılamaz.
+
+| Hedef yazı | Hedef kelime | Zayıf anchor | Doğru anchor |
+|---|---|---|---|
+| mbps nedir | mbps | minimum bağlantı hızını | **Mbps** |
+| upload nedir | upload | yükleme hızı | **upload hızı** |
+| 5G ve ping | ping | düşük gecikme | **ping** |
+| fps nedir | fps | kare hızıyla | **FPS** |
+
+**Terim yazıda geçmiyorsa metin güncellenir.** Anchor uydurulmaz, cümle terimi doğal biçimde
+taşıyacak hâle getirilir:
+
+- "Belirleyici olan bitrate değil, düşük gecikme ve düzenli veri akışı" →
+  "Belirleyici olan bitrate değil, **ping** olarak ölçülen düşük gecikme ve düzenli veri akışı"
+- "Canlı yayında belirleyici olan yükleme hızı oluyor" →
+  "Canlı yayında belirleyici olan **upload hızı** oluyor"
+- "çözünürlük ve kare hızıyla birlikte artıyor" → "çözünürlük ve kare hızıyla, yani **FPS**
+  değeriyle birlikte artıyor"
+
+Bağlantı kurulmadan önce hedef kelimenin gövdede kaç kez geçtiği ölçülür; sıfırsa terimin eklendiği
+cümle yorumda belirtilir. Terim yazının konusuyla ilgisizse bağlantı hiç kurulmaz, zorlanmaz.
+
+### Dış kaynak bağlantıları
+
+Dış bağlantıların anchor'ı da kaynağı adlandırır. "özetliyor", "oluyor", "buradan" gibi anlam
+taşımayan anchor'lar bağlantının nereye gittiğini ne okuyucuya ne arama motoruna anlatıyor:
+"YouTube'un resmi olarak önerdiği yükleme değerlerini", "Twitch'in resmi yayın kılavuzuna".
+
+### Yerleşim
+
 - Bağlantı gövde içinden verilir; ilgili yazılar bloğu bu yerleşimin yerini tutmaz
 - Bir yazıda 3-4 iç link yeterli; her biri okuyucunun o noktada soracağı sorunun karşılığıdır
 - python-docx'te hyperlink `w:hyperlink` öğesiyle eklenir (`scripts/revize_sablon.py` içindeki
