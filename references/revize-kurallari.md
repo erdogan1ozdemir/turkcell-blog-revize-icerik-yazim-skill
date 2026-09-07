@@ -13,6 +13,48 @@
 - Yazarın ses tonu, örnekleri ve benzetmeleri. Revizyon metni yeniden yazmak değildir
 - Kaynak satırları ve `Not:` blokları
 
+## Giriş paragrafları
+
+Tanım bir kez verilir. Giriş paragrafını tanımla açtıktan sonra ikinci paragrafın aynı tanımı
+başka kelimelerle tekrarlamadığı **karşılaştırarak** denetlenir; iki paragrafın ilk 160 karakteri
+arasındaki karakter benzerliği 0.45'i aşıyorsa tekrar vardır.
+
+- İlk paragraf: tanım, kısa mekanizma, konuya bağlayan bir cümle
+- İkinci paragraf: tanımı tekrarlamaz; konunun nerede karşımıza çıktığı, kimin işine yaradığı ya da
+  somut bir örnekle devam eder
+- Kaynak metinde "Günümüzde", "teknolojinin gelişmesiyle birlikte" gibi açılışlar ve "-dır" kipi
+  varsa blogun "-yor" anlatımına çevrilir
+
+Bir örnek: bir yazının girişi "Bitrate, bir ses ya da görüntü içeriğinin saniyede taşıdığı veri
+miktarını ifade ediyor" ile açılırken ikinci paragraf "Bitrate, dijital ses ve görüntü içeriklerinin
+birim zamanda taşıdığı veri miktarını ifade eden temel bir teknik ölçüttür" diye devam ediyordu.
+İkinci paragraf, konunun kullanım alanlarıyla yeniden yazıldı.
+
+## Sık sorulan sorular: önce cevap
+
+Her yanıt **sorunun karşılığıyla** başlar; koşul ve açıklama arkaya bırakılır. "Değişir", "duruma
+göre farklılık gösterir", "birçok etkene bağlıdır" ile açılan yanıt cevabı erteliyor demektir.
+
+| Kaçınılacak açılış | Tercih edilen açılış |
+|---|---|
+| "Bit rate, içeriğin türüne göre değişiyor. 1080p için 8 Mbps…" | "1080p video için 8 Mbps, 4K için 35-45 Mbps… Değer içeriğin türüne göre değişiyor." |
+| "Bu sorunun tek bir cevabı yok." | Somut değer ya da tanım, ardından koşul |
+
+Yanıt 2-3 cümleyi geçmez ve sayı içeren sorularda değer ilk cümlede bulunur. Bu yapı hem öne çıkan
+snippet hem AI Overview alıntısı için gerekli.
+
+## İç link yerleşimi
+
+Bağlantılar **gerçek hyperlink olarak metne yerleştirilir**, yorum olarak bırakılmaz. Yorumda yalnız
+gerekçe kalır. Anchor, cümlenin doğal bir parçası olan ifadedir; "buraya tıklayın" ya da çıplak adres
+kullanılmaz.
+
+- Anchor, hedef yazının konusunu adlandıran ifadedir: "minimum bağlantı hızını", "yükleme hızı"
+- Bağlantı gövde içinden verilir; ilgili yazılar bloğu bu yerleşimin yerini tutmaz
+- Bir yazıda 3-4 iç link yeterli; her biri okuyucunun o noktada soracağı sorunun karşılığıdır
+- python-docx'te hyperlink `w:hyperlink` öğesiyle eklenir (`scripts/revize_sablon.py` içindeki
+  `link_yap` işlevi), stil olarak `Hyperlink` ve altı çizili mavi kullanılır
+
 ## Yeni bölüm eklerken
 
 - Yeni bölüm yalnız **karşılanmayan bir arama** varsa açılır; hacmi yorumda yazılır

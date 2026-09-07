@@ -194,3 +194,89 @@ if i is not None:
     LOG.append("Ara başlık güncellendi: Bitrate Ne Demek, Ne Anlama Geliyor?")
 d.save(HEDEF)
 print("\n".join(LOG))
+
+# ------------------------------------------------------------------ 8 · giriş tekrarının giderilmesi
+P=d.paragraphs
+i=bul(r'^Bitrate, dijital ses ve görüntü içeriklerinin birim zamanda')
+if i is not None:
+    p=P[i]
+    for r in list(p.runs): r._r.getparent().remove(r._r)
+    p.add_run("Bu değer, video izlemekten canlı yayına, görüntülü görüşmeden bulut oyuna kadar dijital "
+              "deneyimin her aşamasında karşımıza çıkıyor. Büyük platformlar da bitrate'i tesadüfe "
+              "bırakmıyor: YouTube çözünürlüğe göre önerilen bantları yayımlıyor, Twitch yayıncılar için "
+              "üst sınır koyuyor, müzik servisleri ise akış kalitesini bu değere göre kademelendiriyor.")
+    yorum(p,"İkinci paragraf yeniden yazıldı. Önceki hâlinde bitrate tanımı ilk paragraftaki tanımı "
+            "neredeyse birebir tekrarlıyordu ('saniyede taşıdığı veri miktarını ifade ediyor' / 'birim "
+            "zamanda taşıdığı veri miktarını ifade eden temel bir teknik ölçüttür'). Tanım ilk paragrafta "
+            "kaldı, bu paragraf konunun nerede karşımıza çıktığıyla devam ediyor. Ayrıca 'Günümüzde' "
+            "kalıbı ve '-dır' kipi, blogun geri kalanındaki '-yor' anlatımına uyacak biçimde değiştirildi.")
+    LOG.append("İkinci paragraftaki tanım tekrarı giderildi")
+
+# ------------------------------------------------------------------ 9 · SSS: önce cevap, sonra açıklama
+i=bul(r'^Bit rate, içeriğin türüne ve izleneceği ortama göre değişiyor')
+if i is not None:
+    p=P[i]
+    for r in list(p.runs): r._r.getparent().remove(r._r)
+    p.add_run("1080p video için 8 Mbps, 4K video için 35-45 Mbps, 1080p60 canlı yayın için 6.000 kbps, "
+              "yüksek kaliteli müzik için 320 kbps çoğu durumda dengeli bir değer oluyor. Bit rate "
+              "içeriğin türüne ve izleneceği ortama göre değiştiği için tek bir doğru sayı bulunmuyor; "
+              "yukarıdaki değerler başlangıç noktası olarak alınabiliyor.")
+    yorum(p,"Yanıt sırası değiştirildi. Önceki hâlinde cevap 'içeriğin türüne göre değişiyor' cümlesiyle "
+            "erteleniyordu; sorunun karşılığı olan değerler ikinci cümlede kalıyordu. Sorunun yanıtı ilk "
+            "cümleye alındı, koşul açıklaması arkasına bırakıldı. Diğer üç soru zaten doğrudan yanıtla "
+            "başlıyor, onlara dokunulmadı.")
+    LOG.append("SSS ilk yanıtı doğrudan cevapla başlayacak biçimde düzenlendi")
+d.save(HEDEF); print("\n".join(LOG[-2:]))
+
+# ------------------------------------------------------------------ 10 · gövde içi iç linkler
+from docx.oxml.ns import qn
+from docx.oxml import OxmlElement
+from docx.opc.constants import RELATIONSHIP_TYPE as RT
+
+def link_yap(p, anchor, url):
+    """Paragraf metnindeki anchor ifadesini gerçek bağlantıya çevirir."""
+    metin=p.text
+    k=metin.find(anchor)
+    if k<0: return False
+    once, sonra = metin[:k], metin[k+len(anchor):]
+    for r in list(p.runs): r._r.getparent().remove(r._r)
+    if once: p.add_run(once)
+    rid=p.part.relate_to(url, RT.HYPERLINK, is_external=True)
+    h=OxmlElement('w:hyperlink'); h.set(qn('r:id'), rid)
+    r=OxmlElement('w:r'); rPr=OxmlElement('w:rPr')
+    st=OxmlElement('w:rStyle'); st.set(qn('w:val'),'Hyperlink'); rPr.append(st)
+    c=OxmlElement('w:color'); c.set(qn('w:val'),'1D5AFF'); rPr.append(c)
+    u=OxmlElement('w:u'); u.set(qn('w:val'),'single'); rPr.append(u)
+    r.append(rPr)
+    t=OxmlElement('w:t'); t.text=anchor; t.set(qn('xml:space'),'preserve'); r.append(t)
+    h.append(r); p._p.append(h)
+    if sonra: p.add_run(sonra)
+    return True
+
+LINKLER=[
+ (r'İnternet ihtiyacı: İçeriğin bitrate','minimum bağlantı hızını',
+  'https://www.turkcell.com.tr/blog/mbps-nedir',
+  "İç link eklendi: 'minimum bağlantı hızını' ifadesi Mbps yazısına bağlandı. Bitrate ile bağlantı hızı "
+  "arasındaki ilişki okuyucunun ilk takıldığı yer oluyor ve blogun bu konudaki sayfası aramada 2.5 "
+  "ortalama sırada. Bağlantı gövde içinden veriliyor; ilgili yazılar bloğu bu yerleşimin yerini tutmuyor."),
+ (r'^Yayıncı tarafı \(Yükleme\)','yükleme hızı',
+  'https://www.turkcell.com.tr/blog/upload-nedir-downloaddan-farki-ve-ideal-hiz-degerleri',
+  "İç link eklendi: 'yükleme hızı' ifadesi upload yazısına bağlandı. Canlı yayın bölümünde yükleme hızı "
+  "belirleyici kavram ve blogda bu konuyu karşılayan ayrı bir yazı bulunuyor."),
+ (r'^Rekabetçi oyun','düşük gecikme',
+  'https://www.turkcell.com.tr/blog/5g-ve-ping-5g-ile-oyunlarda-ping-dusurme-yollari-ve-cozumler',
+  "İç link eklendi: 'düşük gecikme' ifadesi ping yazısına bağlandı. Oyun bölümünde belirleyici olanın "
+  "bitrate değil gecikme olduğu anlatılıyor; okuyucunun bir sonraki sorusu doğrudan bu yazıya gidiyor."),
+ (r'^Önerilen bitrate çözünürlük ve kare hızıyla','kare hızıyla',
+  'https://www.turkcell.com.tr/blog/fps-nedir',
+  "İç link eklendi: 'kare hızıyla' ifadesi FPS yazısına bağlandı. Tablodaki 24-30 FPS ve 48-60 FPS "
+  "sütunları bu kavramı gerektiriyor."),
+]
+P=d.paragraphs; ek=0
+for desen,anchor,url,not_ in LINKLER:
+    i=bul(desen)
+    if i is None: continue
+    if link_yap(P[i],anchor,url):
+        yorum(P[i],not_); ek+=1
+LOG.append(f"Gövde içi iç link: {ek} bağlantı eklendi")
+d.save(HEDEF); print(f"iç link eklendi: {ek}")

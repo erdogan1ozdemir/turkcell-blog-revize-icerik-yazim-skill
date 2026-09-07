@@ -33,6 +33,15 @@ Revize edilen metin bu profile uyar; kurumsal rapor diline (`icerik-dili-rehberi
 - Dış kaynak kullanıldığında yazının sonunda `Kaynak: <adres>` satırı bulunur.
 - Tablo yeni yazılarda yaygın; rakiplerde neredeyse hiç yok, korunması gereken bir üstünlük.
 
+## Tekrar denetimi
+
+Aynı bilgi iki kez verilmez. Yazı tamamlandığında şunlar karşılaştırılır:
+
+- Giriş paragrafı ile ikinci paragraf (tanım tekrarı)
+- Ara başlık altındaki ilk cümle ile bir önceki bölümün kapanışı
+- Sık sorulan sorular yanıtları ile gövdedeki karşılıkları: yanıt gövdedeki cümlenin kopyası değil,
+  aynı bilginin kısa ve tek başına okunabilir hâli olur
+
 ## Yazarken kaçınılacaklar
 
 - Yapay zekâ metni izlenimi veren kalıplar: "günümüzde", "teknolojinin gelişmesiyle birlikte",
