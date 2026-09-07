@@ -20,6 +20,7 @@ kutusu sayıma girmez.
 | Bağlantıları sayfa genelinden saymak | 38 iç link göründü, gövdede yalnız yazar bağlantısı vardı | `İlgili Yazılar` öncesi kesitten saymak |
 | Hedef kelimeyi tam öbek aramak | "nfc ne demek" gövdede 0 çıkar | Niyet ekini ayırıp **ana terim** üzerinden saymak |
 | Ayrık/bitişik yazımı tek biçim saymak | "wifi 6" varken "wi-fi 6" sayılmaz | Normalizasyonda wi fi→wifi, e posta→eposta, type c→typec |
+| Tablo ve listeyi belge geneli sayıp bölüm bazında saymamak | "Canlı yayın değerleri tablo hâline getirilsin" önerildi, bölümde tablo zaten vardı | Envanteri **ara başlık bazında** çıkarmak (bkz. `revize-kurallari.md`) |
 
 ## Yoğunluk okuması
 

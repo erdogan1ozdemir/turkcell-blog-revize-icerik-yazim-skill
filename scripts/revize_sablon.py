@@ -143,27 +143,46 @@ for desen,not_ in LINK:
     if i is not None: yorum(P[i],not_); n+=1
 LOG.append(f"İç link önerisi: {n} nokta")
 
-# ------------------------------------------------------------------ 6 · görsel yerleşimleri
+# ------------------------------------------------------------------ 6 · bölüm envanteri ve görsel yerleşimi
+# Öneri vermeden önce her bölümün ne taşıdığı ölçülür: tablosu olan bölüme "tablo hâline getirilsin"
+# ya da "tek bakışta anlaşılır olsun" gerekçeli görsel önerilmez.
+from docx.table import Table
+from docx.text.paragraph import Paragraph
+def bolum_envanteri():
+    env={}; son=None
+    for el in list(d.element.body):
+        if el.tag.endswith('}p'):
+            pp=Paragraph(el,d)
+            if pp.style.name.startswith('Heading'):
+                son=pp.text.strip(); env.setdefault(son,{"tablo":0,"madde":0})
+            elif son and pp.text.strip().startswith(("•","-")): env[son]["madde"]+=1
+        elif el.tag.endswith('}tbl') and son: env[son]["tablo"]+=1
+    return env
+ENV=bolum_envanteri()
+print("bölüm envanteri · tablosu olanlar:",[k[:40] for k,v in ENV.items() if v["tablo"]])
+
 GORSEL=[
- (r'^Bitrate, saniyedeki bit sayısına göre bps',
-  "Görsel (mevcutta yok): bps, kbps, Mbps ve Gbps basamaklarını gösteren bir ölçek görseli eklenebilir. "
-  "Yazının gövdesinde şu an tek bir açıklayıcı görsel bulunmuyor; arama sonucunda ilk sıradaki üç sayfanın "
-  "satırında görsel küçük resmi görünüyor. Dosya adı bitrate-olcu-birimleri.jpg, alt metni 'bitrate ölçü "
-  "birimleri bps kbps Mbps Gbps' olabilir."),
- (r'^Sabit bitrate \(CBR\)',
-  "Görsel (mevcutta yok): CBR ve VBR'nin veri hızını zaman içinde nasıl dağıttığını gösteren iki çizgili "
-  "basit bir grafik, bu bölümü tek bakışta anlaşılır hâle getiriyor. Alt metin: 'CBR ve VBR bitrate farkı'."),
- (r'^Canlı yayın için bitrate ayarları platforma göre',
-  "Görsel (mevcutta yok): platform bazlı önerilen değerleri özetleyen bir görsel eklenebilir. "
-  "Alt metin: 'canlı yayın bitrate ayarları YouTube Twitch Instagram'."),
+ (r'^Bitrate, dosyanın bit cinsinden boyutunun',
+  "Görsel (mevcutta yok): hesaplama adımlarını gösteren bir şema eklenebilir; boyut, süre ve sonuç "
+  "üç kutuda verilebilir. Bu bölümde tablo bulunmuyor, anlatım tamamen metin üzerinden ilerliyor. "
+  "Yazının gövdesinde kapak dışında hiç görsel yok; arama sonucunda ilk sıradaki üç sayfanın satırında "
+  "görsel küçük resmi görünüyor. Dosya adı bitrate-nasil-hesaplanir.jpg, alt metni 'bitrate nasıl "
+  "hesaplanır formülü' olabilir."),
+ (r'^Bitrate içeriğin saniyede ürettiği veri miktarını, bant genişliği',
+  "Görsel (mevcutta yok): bitrate, bant genişliği ve buffering ilişkisini gösteren basit bir akış "
+  "şeması bu bölümü destekler. Bölümde tablo bulunmuyor, üç kavram yalnız madde listesiyle ayrılıyor. "
+  "Alt metin: 'bitrate ve bant genişliği farkı'."),
+ (r'^Sabit bitrate \(CBR\), bir dosyayı baştan sona',
+  "Görsel (mevcutta yok): bölümde CBR ve VBR'yi özellik bazında karşılaştıran bir tablo zaten bulunuyor; "
+  "önerilen görsel onun yerine geçmiyor, veri hızının zaman içindeki dağılımını gösteren iki çizgili bir "
+  "grafik olarak düşünülüyor. Tablo değerleri, grafik davranışı anlatıyor. Alt metin: 'CBR ve VBR veri "
+  "hızı dağılımı'."),
 ]
 m=0
 for desen,not_ in GORSEL:
     i=bul(desen)
     if i is not None: yorum(P[i],not_); m+=1
-LOG.append(f"Görsel önerisi: {m} nokta")
-d.save(HEDEF); print(f"iç link {n} · görsel {m}")
-
+LOG.append(f"Görsel önerisi: {m} nokta (tablosu bulunan bölümler dışarıda bırakıldı)")
 # ------------------------------------------------------------------ 7 · başlık altı özet ve kelime karşılığı
 P=d.paragraphs
 i=bul(r'^Bitrate Görüntü ve Ses Kalitesini')

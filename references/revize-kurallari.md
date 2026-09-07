@@ -13,6 +13,40 @@
 - Yazarın ses tonu, örnekleri ve benzetmeleri. Revizyon metni yeniden yazmak değildir
 - Kaynak satırları ve `Not:` blokları
 
+## Öneri vermeden önce bölüm envanteri
+
+Hiçbir ekleme önerisi, o bölümde zaten ne olduğu ölçülmeden verilmez. Ölçüm **bölüm bazındadır**;
+belgenin tamamında altı tablo bulunması, önerinin verildiği bölümde tablo olduğu anlamına gelmiyor.
+
+Her ara başlık için şunlar sayılır: tablo, madde listesi, görsel, kaynak satırı.
+
+```python
+def bolum_envanteri(d):
+    env={}; son=None
+    for el in list(d.element.body):
+        if el.tag.endswith('}p'):
+            p=Paragraph(el,d)
+            if p.style.name.startswith('Heading'):
+                son=p.text.strip(); env.setdefault(son,{"tablo":0,"madde":0})
+            elif son and p.text.strip().startswith(("•","-")): env[son]["madde"]+=1
+        elif el.tag.endswith('}tbl') and son: env[son]["tablo"]+=1
+    return env
+```
+
+Envanterin çıktısına göre:
+
+- **Tablosu olan bölüme "tablo hâline getirilsin" önerilmez.** Bu hata bir kez yapıldı: canlı yayın
+  bölümü için "değerler tablo hâline getirilir: platform, çözünürlük, önerilen bitrate" önerildi;
+  bölümde zaten "Platform / 1080p60 için Tipik Bitrate / Ek Not" tablosu duruyordu ve önerilen
+  sütunlar mevcut tablonun sütunlarıydı.
+- **Tablosu olan bölüme görsel önerilecekse gerekçe ayrışır.** "Tek bakışta anlaşılır hâle getirir"
+  gerekçesi tabloyu yok sayar. Görsel ancak tablodan farklı bir işi yapıyorsa önerilir: tablo değer
+  karşılaştırır, grafik davranışı ya da zaman içindeki dağılımı gösterir. Bu ayrım yorumda yazılır.
+- **Görsel önerileri önce tablosuz bölümlere verilir.** Anlatımı tamamen metne dayanan bölümler
+  görselden en çok yararlanan yerlerdir.
+
+Aynı disiplin madde listesi, kaynak satırı ve `Not:` bloğu önerileri için de geçerlidir.
+
 ## Giriş paragrafları
 
 Tanım bir kez verilir. Giriş paragrafını tanımla açtıktan sonra ikinci paragrafın aynı tanımı
